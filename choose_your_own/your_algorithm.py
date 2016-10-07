@@ -3,6 +3,7 @@
 import matplotlib.pyplot as plt
 from prep_terrain_data import makeTerrainData
 from class_vis import prettyPicture
+from sklearn.metrics import accuracy_score
 
 features_train, labels_train, features_test, labels_test = makeTerrainData()
 
@@ -24,7 +25,7 @@ plt.scatter(grade_slow, bumpy_slow, color = "r", label="slow")
 plt.legend()
 plt.xlabel("bumpiness")
 plt.ylabel("grade")
-plt.show()
+#plt.show()
 ################################################################################
 
 
@@ -32,11 +33,32 @@ plt.show()
 ### visualization code (prettyPicture) to show you the decision boundary
 
 
+def classifyNB():
+    from sklearn.naive_bayes import GaussianNB
+    return GaussianNB()
 
+def classifySVC():
+    from sklearn.svm import SVC
+    return SVC(kernel="rbf", C=1000000.0)
 
+def classifyDT():
+    from sklearn import tree
+    return tree.DecisionTreeClassifier(min_samples_split=5)
 
+def classifyAdaboost():
+    from sklearn.ensemble import AdaBoostClassifier
+    return AdaBoostClassifier(learning_rate=1.5)
 
+def classifyRF():
+    from sklearn.ensemble import RandomForestClassifier
+    return RandomForestClassifier(min_samples_split=5)
 
+clf = classifyRF()
+clf.fit(features_train, labels_train)
+
+pred=clf.predict(features_test)
+acc=accuracy_score(labels_test, pred)
+print "Accuracy:", acc
 
 try:
     prettyPicture(clf, features_test, labels_test)

@@ -35,6 +35,8 @@ def prettyPicture(clf, X_test, y_test):
 
     plt.savefig("test.png")
 
+    plt.show()
+
 import base64
 import json
 import subprocess
